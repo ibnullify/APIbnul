@@ -9,13 +9,17 @@ import urllib2
 from flask import Flask, render_template, request, session, redirect, url_for
 import json
 
-api_key = "1I3RG0HH1aH67s0fi9nWhhc5oudr3UvzxprRK35f"
+
+"""api_key = "1I3RG0HH1aH67s0fi9nWhhc5oudr3UvzxprRK35f"
 
 data_file = urllib2.urlopen("https://api.nasa.gov/planetary/apod?api_key="+ api_key)
 info = data_file.read()
 data = json.loads(info)
 img= data['hdurl']
 explanation= data['explanation']
+"""
+
+
 
 app = Flask(__name__) #create instance of class 
 
@@ -24,7 +28,13 @@ app = Flask(__name__) #create instance of class
 
 @app.route("/")
 def hello():
-    return render_template("temp.html", title = "NASA",img_url = img, description = explanation)
+    data_file = urllib2.urlopen("http://jservice.io/api/random")
+    info = data_file.read()
+    data = json.loads(info)
+    question= data[0]['question']
+    answer= data[0]['answer']
+    category = data[0]['category']['title']
+    return render_template("temp.html", title = "Jeopardy", category = category, question = question, answer = answer)
 
 
 if __name__=="__main__":
